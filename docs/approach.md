@@ -29,3 +29,38 @@ olarak test edilip gerekirse güncellenecek.
   piyasa rejimi farkindan (distribution shift) kaynaklaniyor - dropout bu
   sorunu cozmuyor. Final model dropout'suz (0.0) birakildi.
 - Final karar: GRU, lookback=10, hidden=32, dropout=0.0
+
+## Asama 9: Kritik Degerlendirme ve Kapanis
+
+### Sonuclarin Sinirlari
+- Bu proje tek bir hisseye (AMZN), tek bir ozellige (Close fiyati) ve
+  ~2 yillik gunluk veriye dayaniyor. Sonuclar (GRU RMSE=7.35$, LSTM
+  RMSE=11.94$) bu dar kapsamda gecerli; farkli bir hisse, zaman araligi
+  veya piyasa kosulunda ayni siralama (GRU > LSTM) garanti degil.
+- Asama 6'daki deneyde gozlemlenen train/test loss farki, klasik
+  overfitting'den cok train ve test donemleri arasindaki piyasa rejimi
+  farkindan (distribution shift) kaynaklaniyor olabilir - hisse
+  fiyatlari zaman icinde istatistiksel olarak durgun (stationary)
+  degildir, bu da zaman serisi tahmininin temel zorluklarindan biridir.
+- Model sadece fiyat gecmisini kullaniyor; hacim, haber/sentiment,
+  makroekonomik veri gibi gercek fiyat hareketini etkileyen faktorler
+  disarida birakildi.
+- Akademik/pratik konsensus: hisse fiyati tahmini, kisa vadeli
+  gurultunun (noise) sinyalden ayirt edilmesinin cok zor oldugu,
+  bilinen sekilde guvenilmez bir problemdir. Bu proje bir yatirim
+  araci degil, bir ogrenme/portfoy calismasidir.
+
+### Elestirel Okuma Notu
+Narayanan, A., & Kapoor, S. (2024). *AI Snake Oil: What Artificial
+Intelligence Can Do, What It Can't, and How to Tell the Difference*.
+Princeton University Press. Bu kitap, ML'in hype ile gercek performansi
+arasindaki farki ayirt etmenin onemini vurguluyor - hisse tahmini gibi
+kaotik, dusuk sinyal-gurultu oranli problemlerde bu ayrim ozellikle
+kritik.
+
+### Sonraki Adimlar (bonus, kapsam disi birakildi)
+- Ek ozellikler: islem hacmi, teknik indikatorler (RSI, MACD)
+- Coklu hisse / sektor bazli genelleme testi
+- Transformer tabanli zaman serisi modelleri (ör. Temporal Fusion
+  Transformer) ile karsilastirma
+- Daha uzun tarihsel veri (5-10 yil) ile tekrar deney
