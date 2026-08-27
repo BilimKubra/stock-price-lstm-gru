@@ -7,11 +7,11 @@ NUM_LAYERS = 2
 OUTPUT_SIZE = 1
 
 class LSTMModel(nn.Module):
-    def __init__(self, input_size=INPUT_SIZE, hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS, output_size=OUTPUT_SIZE):
+    def __init__(self, input_size=INPUT_SIZE, hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS, output_size=OUTPUT_SIZE, dropout=0.0):
         super().__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
         self.fc = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
@@ -23,11 +23,11 @@ class LSTMModel(nn.Module):
 
 
 class GRUModel(nn.Module):
-    def __init__(self, input_size=INPUT_SIZE, hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS, output_size=OUTPUT_SIZE):
+    def __init__(self, input_size=INPUT_SIZE, hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS, output_size=OUTPUT_SIZE, dropout=0.0):
         super().__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
-        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
+        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
         self.fc = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
@@ -40,12 +40,7 @@ class GRUModel(nn.Module):
 if __name__ == '__main__':
     from data_prep import load_and_prepare
     X_train, X_test, y_train, y_test, scaler = load_and_prepare()
-
     lstm = LSTMModel()
     gru = GRUModel()
-
-    lstm_out = lstm(X_train[:4])
-    gru_out = gru(X_train[:4])
-
-    print('LSTM cikti sekli:', lstm_out.shape, '(beklenen: [4, 1])')
-    print('GRU cikti sekli :', gru_out.shape, '(beklenen: [4, 1])')
+    print('LSTM cikti sekli:', lstm(X_train[:4]).shape, '(beklenen: [4, 1])')
+    print('GRU cikti sekli :', gru(X_train[:4]).shape, '(beklenen: [4, 1])')
