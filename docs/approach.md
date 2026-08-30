@@ -1,3 +1,22 @@
+## Proje Asamalari ve Commit Karsiliklari
+
+| Asama | Aciklama | Commit(ler) |
+|-------|----------|-------------|
+| 0 | Ortam kurulumu, klasor iskeleti | `6beac3a`, `44e87f5` |
+| 1 | Kavramsal temel (ML fundamentals) | - (kod uretmedi, sohbette islendi) |
+| 2 | Ar-Ge sprint 1: veri kaynagi + mimari kararlari | `846aa76`, `a35607a`, `81d2cb6` |
+| 3 | PyTorch mekaniginin gercek veriyle dogrulanmasi | `987b629` |
+| 4 | Veri pipeline (normalize, sliding window, split) | `bdef219` |
+| 5 | LSTM/GRU model siniflari | `bf3c3e8` |
+| 6 | Ar-Ge sprint 2: deney matrisi + dropout testi | `1b5bac5`, `c979637` |
+| 7 | Final degerlendirme | `4c14e22` |
+| 8 | README ve dokumantasyon | `84a4fe7` |
+| 9 | Kritik degerlendirme ve kapanis | `8924d4d` |
+| 10 | Jupyter Notebook | `02c1928` |
+| 11 | Naive baseline + testler | `00b1490` |
+
+---
+
 # Yaklaşım Notları (Ar-Ge)
 
 ## Veri Kaynağı
