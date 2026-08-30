@@ -34,7 +34,11 @@ python3 src/models.py        # model mimarilerini test et
 python3 src/train.py         # tek seferlik egitim (baseline)
 python3 src/experiments.py   # lookback deney matrisi (10/20/30 x LSTM/GRU)
 python3 src/evaluate.py      # final degerlendirme + grafik
+python3 src/baseline.py      # naive baseline (yarin=bugun) karsilastirmasi
+pytest tests/                # birim testlerini calistir
 ```
+
+Adim adim anlatili versiyon icin: [`notebooks/stock_prediction_lstm_gru.ipynb`](notebooks/stock_prediction_lstm_gru.ipynb)
 
 ## Mimari
 
@@ -54,11 +58,17 @@ Final karşılaştırma (lookback=10, test seti üzerinde):
 
 | Model | Test RMSE ($) | Eğitim Süresi (s) |
 |-------|---------------|--------------------|
+| Naive Baseline (yarın=bugün) | **5.97** | — |
 | LSTM  | 11.94         | 0.49               |
-| GRU   | **7.35**      | **0.38**           |
+| GRU   | 7.35          | 0.38               |
 
-**GRU, LSTM'e göre hem daha isabetli hem daha hızlı** — referans makaledeki
-bulguyla tutarlı. Gerçek vs tahmin grafiği:
+GRU, LSTM'e göre hem daha isabetli hem daha hızlı — referans makaledeki
+bulguyla tutarlı. **Ancak naive baseline (yarının fiyatı = bugünün fiyatı
+kabul edilir) her iki modeli de geçiyor.** Bu, finansal zaman serilerinin
+rastgele yürüyüşe yakın olmasından kaynaklanan, literatürde bilinen bir
+sonuçtur (bkz. Kaynaklar) — karmaşık modellerin basit bir kıyaslamayı
+her zaman geçemeyebileceğini gösteriyor. Detaylı tartışma için
+[`docs/approach.md`](docs/approach.md). Gerçek vs tahmin grafiği:
 
 ![Gerçek vs Tahmin](docs/lstm_vs_gru_predictions.png)
 
@@ -81,6 +91,7 @@ değerlendirme). Her aşama ayrı bir Git commit/branch olarak izlenebilir.
 - Hochreiter, S., & Schmidhuber, J. (1997). *Long Short-Term Memory*. Neural Computation, 9(8), 1735–1780.
 - Cho, K., et al. (2014). *Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation*. EMNLP.
 - *Hyperparameter-Optimized RNN, LSTM, and GRU Models for Stock Price Prediction*. MDPI Symmetry (2025).
+- Narayanan, A., & Kapoor, S. (2024). *AI Snake Oil: What Artificial Intelligence Can Do, What It Can't, and How to Tell the Difference*. Princeton University Press.
 
 **Uygulama referansı:** Rodolfo Saldanha, [Stock Price Prediction with PyTorch](https://medium.com/swlh/stock-price-prediction-with-pytorch-37f52ae84632) (Medium).
 
