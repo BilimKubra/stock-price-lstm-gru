@@ -64,3 +64,13 @@ kritik.
 - Transformer tabanli zaman serisi modelleri (ör. Temporal Fusion
   Transformer) ile karsilastirma
 - Daha uzun tarihsel veri (5-10 yil) ile tekrar deney
+
+## Asama 11: Naive Baseline Karsilastirmasi
+
+Ar-Ge sonuclarinin bilimsel olarak degerlendirilebilmesi icin bir naive baseline eklendi: "yarinin fiyati = bugunun fiyati" (persistence/random walk varsayimi).
+
+**Sonuc:** Naive baseline test RMSE = $5.97, hem LSTM'i ($11.94) hem de GRU'yu ($7.35) geciyor.
+
+**Yorum:** Bu sonuc finansal zaman serilerinin (ozellikle gunluk kapanis fiyatlarinin) rastgele yuruyuse (random walk) yakin olmasindan kaynaklanan, literaturde bilinen bir olgudur. Karmasik sinir agi mimarilerinin (LSTM, GRU) bu problemde ozellikle avantaj saglamadigini, aksine ekstra karmasiklik/hesaplama maliyeti getirdigini gosteriyor. Bu, Narayanan & Kapoor (2024) "AI Snake Oil" kitabinin merkezi elestirisiyle dogrudan ortusuyor: ML modelleri, basit bir kiyaslamayla karsilastirilmadan degerlendirildiginde yanlis bir basari izlenimi verebiliyor.
+
+**Sonuc:** Bu proje icin LSTM/GRU karsilastirmasi hala pedagojik olarak degerli (mimari farkliliklarini, egitim surecini, PyTorch kullanimini ogretiyor), ancak "GRU en iyi model" gibi bir iddia bu baseline olmadan eksik olurdu.
