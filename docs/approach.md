@@ -113,10 +113,23 @@ hesaplanır. Naive baseline deterministik olduğu için tek değerdir.
 | GRU | 7,38 | 0,15 | 7,19 | 7,65 |
 | LSTM | 10,26 | 1,38 | 8,71 | 11,94 |
 
-GRU 5/5 kazandı. Beklenmedik ikinci bulgu, varyans farkı: LSTM'in sonucu
-başlangıç ağırlıklarına belirgin şekilde duyarlı, GRU ise kararlı. Muhtemel
-açıklama, GRU'nun daha az parametre taşıması — küçük veri kümesinde daha az
-parametre hem daha az aşırı öğrenme hem daha az başlangıç duyarlılığı demek.
+GRU 5/5 kazandı. İkinci gözlem, koşular arası tutarlılık: LSTM'in sonucu
+3,23 dolarlık bir aralıkta oynarken (8,71–11,94) GRU 0,46 dolarlık bir aralıkta
+kalıyor (7,19–7,65). Muhtemel açıklama, GRU'nun daha az parametre taşıması —
+küçük veri kümesinde daha az parametre hem daha az aşırı öğrenme hem daha az
+başlangıç duyarlılığı demek.
+
+**Bu farkın büyüklüğü hakkında iddia edilmeyen şey:** standart sapmaların oranı
+(1,38 / 0,15 ≈ 9) hesaplanabilir ama raporlanmadı. Beş örnekten hesaplanan bir
+standart sapmanın kendi belirsizliği yaklaşık ±%35'tir; bu oran 5 de olabilir
+15 de. Eldeki veri yönü göstermeye yeter, büyüklüğü sabitlemeye yetmez. Kesin
+bir oran için 20–30 koşu gerekir.
+
+**Ölçek notu:** Test dönemindeki ortalama fiyat 252,76 $, günlük ortalama mutlak
+değişim 3,36 $. Üç yöntemin hatası da fiyatın %2–4'ü bandında (baseline %2,4,
+GRU %2,9, LSTM %4,1). Farklar gerçek ancak büyüklük sırası aynıdır; ayrıca
+baseline'ın hatası serinin kendi oynaklığına yakındır — bir modelin değer
+katabilmesi için bu bandın altına inmesi gerekirdi.
 
 **Rapora etkisi:** "Tek koşu, istatistiksel tekrar yapılmadı" sınırlaması
-kaldırıldı. Yerine varyans ölçümü eklendi.
+kaldırıldı. Yerine tekrarlanabilirlik ölçümü ve ölçek bağlamı eklendi.
