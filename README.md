@@ -74,6 +74,33 @@ her zaman geçemeyebileceğini gösteriyor. Detaylı tartışma için
 
 Tam deney matrisi (6 kombinasyon, dropout testi dahil): [`docs/experiment_results.csv`](docs/experiment_results.csv)
 
+### Tekrarlanabilirlik: 5 farklı rastgele tohum
+
+Sinir ağı ağırlıkları rastgele başlatılır; tek bir koşuda GRU'nun kazanması o
+başlangıcın şansı olabilir. Aynı deney (lookback=10, 100 epoch) **beş farklı
+tohumla** tekrarlandı:
+
+| Model | Ortalama RMSE ($) | Std sapma | En iyi | En kötü | Ort. süre (s) |
+|-------|-------------------|-----------|--------|---------|----------------|
+| Naive Baseline | **5,97** | — (deterministik) | — | — | — |
+| GRU   | 7,38 | **0,15** | 7,19 | 7,65 | 0,38 |
+| LSTM  | 10,26 | 1,38 | 8,71 | 11,94 | 0,51 |
+
+**GRU beş tohumun beşinde de LSTM'i geçti.** Sonuç rastgele başlangıcın şansı
+değil.
+
+İkinci ve beklenmedik bulgu: **GRU aynı zamanda çok daha kararlı.** Standart
+sapması 0,15; LSTM'inki 1,38 — yaklaşık dokuz kat fark. LSTM'in sonucu hangi
+rastgele başlangıçla eğitildiğine belirgin şekilde bağlı (8,71 ile 11,94
+arasında değişiyor), GRU ise her koşuda neredeyse aynı yere geliyor. Bu, tek
+koşulu bir deneyde görülemeyecek bir sonuçtur.
+
+Naive baseline (5,97 $) GRU'nun beş koşuluk ortalamasından **%24 daha iyi**
+kaldı; yani baseline'ın üstünlüğü de tek koşuluk bir tesadüf değil.
+
+Koşu kayıtları: [`docs/tohum_sonuclari.csv`](docs/tohum_sonuclari.csv) ·
+Script: `python3 src/tohum_deneyi.py`
+
 ## İş Akışı
 
 Proje 10 aşamalı, Ar-Ge sprintleri içeren bir yol haritasıyla geliştirildi

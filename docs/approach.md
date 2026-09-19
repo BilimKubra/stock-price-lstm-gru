@@ -93,3 +93,30 @@ Ar-Ge sonuclarinin bilimsel olarak degerlendirilebilmesi icin bir naive baseline
 **Yorum:** Bu sonuc finansal zaman serilerinin (ozellikle gunluk kapanis fiyatlarinin) rastgele yuruyuse (random walk) yakin olmasindan kaynaklanan, literaturde bilinen bir olgudur. Karmasik sinir agi mimarilerinin (LSTM, GRU) bu problemde ozellikle avantaj saglamadigini, aksine ekstra karmasiklik/hesaplama maliyeti getirdigini gosteriyor. Bu, Narayanan & Kapoor (2024) "AI Snake Oil" kitabinin merkezi elestirisiyle dogrudan ortusuyor: ML modelleri, basit bir kiyaslamayla karsilastirilmadan degerlendirildiginde yanlis bir basari izlenimi verebiliyor.
 
 **Sonuc:** Bu proje icin LSTM/GRU karsilastirmasi hala pedagojik olarak degerli (mimari farkliliklarini, egitim surecini, PyTorch kullanimini ogretiyor), ancak "GRU en iyi model" gibi bir iddia bu baseline olmadan eksik olurdu.
+
+
+## Tekrarlanabilirlik denemesi (Aşama 12)
+
+**Sorun:** İlk değerlendirme tek bir rastgele başlangıçla yapılmıştı. "GRU,
+LSTM'i geçti" sonucu bu tek koşuya dayanıyordu ve README'de bu bir sınırlama
+olarak yazılıydı.
+
+**Yöntem:** `src/tohum_deneyi.py` aynı yapılandırmayı (lookback=10, 100 epoch,
+Adam, lr=0.01) beş farklı tohumla (42, 1, 7, 123, 2024) tekrarlar. Her koşuda
+`torch.manual_seed` ve `np.random.seed` ayarlanır; RMSE dolar cinsinden
+hesaplanır. Naive baseline deterministik olduğu için tek değerdir.
+
+**Sonuç:**
+
+| Model | Ortalama | Std | Min | Max |
+|---|---|---|---|---|
+| GRU | 7,38 | 0,15 | 7,19 | 7,65 |
+| LSTM | 10,26 | 1,38 | 8,71 | 11,94 |
+
+GRU 5/5 kazandı. Beklenmedik ikinci bulgu, varyans farkı: LSTM'in sonucu
+başlangıç ağırlıklarına belirgin şekilde duyarlı, GRU ise kararlı. Muhtemel
+açıklama, GRU'nun daha az parametre taşıması — küçük veri kümesinde daha az
+parametre hem daha az aşırı öğrenme hem daha az başlangıç duyarlılığı demek.
+
+**Rapora etkisi:** "Tek koşu, istatistiksel tekrar yapılmadı" sınırlaması
+kaldırıldı. Yerine varyans ölçümü eklendi.
