@@ -80,26 +80,45 @@ Sinir ağı ağırlıkları rastgele başlatılır; tek bir koşuda GRU'nun kaza
 başlangıcın şansı olabilir. Aynı deney (lookback=10, 100 epoch) **beş farklı
 tohumla** tekrarlandı:
 
-| Model | Ortalama RMSE ($) | Std sapma | En iyi | En kötü | Ort. süre (s) |
-|-------|-------------------|-----------|--------|---------|----------------|
-| Naive Baseline | **5,97** | — (deterministik) | — | — | — |
-| GRU   | 7,38 | **0,15** | 7,19 | 7,65 | 0,38 |
-| LSTM  | 10,26 | 1,38 | 8,71 | 11,94 | 0,51 |
+| Model | Ortalama RMSE ($) | En iyi | En kötü | Aralık | Ort. süre (s) |
+|-------|-------------------|--------|---------|--------|----------------|
+| Naive Baseline | **5,97** | — | — | deterministik | — |
+| GRU   | 7,38 | 7,19 | 7,65 | 0,46 | 0,38 |
+| LSTM  | 10,26 | 8,71 | 11,94 | 3,23 | 0,51 |
 
-**GRU beş tohumun beşinde de LSTM'i geçti.** Sonuç rastgele başlangıcın şansı
-değil.
+**GRU beş tohumun beşinde de LSTM'i geçti**, yani sonuç rastgele başlangıcın
+şansı değil. Naive baseline de beş koşuluk ortalamanın önünde kaldı.
 
-İkinci ve beklenmedik bulgu: **GRU aynı zamanda çok daha kararlı.** Standart
-sapması 0,15; LSTM'inki 1,38 — yaklaşık dokuz kat fark. LSTM'in sonucu hangi
-rastgele başlangıçla eğitildiğine belirgin şekilde bağlı (8,71 ile 11,94
-arasında değişiyor), GRU ise her koşuda neredeyse aynı yere geliyor. Bu, tek
-koşulu bir deneyde görülemeyecek bir sonuçtur.
+İkinci gözlem, koşular arası tutarlılık: LSTM'in sonucu hangi rastgele
+başlangıçla eğitildiğine göre **3,23 dolarlık** bir aralıkta oynuyor; GRU
+**0,46 dolarlık** bir aralıkta kalıyor. Yani aynı kod iki kez çalıştırıldığında
+LSTM belirgin şekilde farklı sonuç verebiliyor, GRU vermiyor.
 
-Naive baseline (5,97 $) GRU'nun beş koşuluk ortalamasından **%24 daha iyi**
-kaldı; yani baseline'ın üstünlüğü de tek koşuluk bir tesadüf değil.
+Bu farkın kaç kat olduğunu söylemiyoruz: **beş koşudan hesaplanan bir standart
+sapmanın kendi belirsizliği yüksektir** (yaklaşık ±%35). Elimizdeki veri, LSTM'in
+başlangıç ağırlıklarına daha duyarlı olduğunu göstermeye yeter; bu duyarlılığın
+büyüklüğünü kesin bir oranla ifade etmeye yetmez. Daha kesin bir ifade için
+20–30 koşu gerekir.
 
 Koşu kayıtları: [`docs/tohum_sonuclari.csv`](docs/tohum_sonuclari.csv) ·
 Script: `python3 src/tohum_deneyi.py`
+
+### Sayılar ne kadar büyük?
+
+Hata değerlerini tek başına okumak yanıltıcı olur. Test dönemindeki ortalama
+AMZN kapanış fiyatı **252,76 $**, serinin günlük ortalama mutlak değişimi
+**3,36 $**:
+
+| Yöntem | RMSE | Test ortalamasının yüzdesi |
+|---|---|---|
+| Naive baseline | 5,97 $ | %2,4 |
+| GRU | 7,38 $ | %2,9 |
+| LSTM | 10,26 $ | %4,1 |
+
+Üç yöntem de %2–4 bandında. Aradaki farklar gerçek ama **büyüklük sırası aynı**;
+"bir model diğerini ezdi" demek doğru olmaz. Ayrıca baseline'ın hatası serinin
+kendi günlük oynaklığına yakın: bir modelin değer katabilmesi için bu bandın
+altına inmesi gerekirdi, ikisi de inemedi.
 
 ## İş Akışı
 
